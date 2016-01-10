@@ -328,6 +328,23 @@ public struct ImageOptions: Equatable {
     [Imgix API Reference](https://www.imgix.com/docs/reference/background#param-bg)
     */
     public var backgroundColor: HexadecimalColorStringConvertable?
+    
+    
+    // MARK: - Stlye Properties
+    
+    /** 
+     Controls the amount of gaussian blur in the image.
+    
+     Values are clamped to the range of `0...2000`.
+    
+     - seealso: 
+     [Imgix API Reference](https://www.imgix.com/docs/reference/format#param-blur)
+    */
+    public var blur: Int? {
+        get { return _blur }
+        set { _blur = newValue?.clamp(min: 0, max: 2000) }
+    }
+    private var _blur: Int?
 
 
     // MARK: - Initializers
@@ -450,6 +467,12 @@ public struct ImageOptions: Equatable {
 
         if let value = backgroundColor, let hex = value.hexadecimalColorString {
             items.append(NSURLQueryItem(name: "bg", value: hex))
+        }
+        
+        // Style properties
+        
+        if let value = blur {
+            items.append(NSURLQueryItem(name: "blur", value: String(value)))
         }
 
         return items
